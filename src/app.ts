@@ -19,7 +19,7 @@ const app = new Elysia().use(AppRoutes).get("/", () => {
     visit: "/v2",
   });
 
-  if (process.env.NODE_ENV === "development")
+  if (Bun.env.RUNNING_ENV === "development")
     console.log("[RB-E] `/` accessed. You shouldn't be here.");
 
   return message;

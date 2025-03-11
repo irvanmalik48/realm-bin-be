@@ -27,7 +27,7 @@ export class PostPasteRepository {
       description: "POST JSON to this endpoint to send paste.",
     });
 
-    if (process.env.NODE_ENV === "development")
+    if (Bun.env.RUNNING_ENV === "development")
       console.log("[RB-E] `/v2/post` accessed. Onboarding message sent.");
 
     return message;
@@ -52,7 +52,7 @@ export class PostPasteRepository {
         paste: "",
       });
 
-      if (process.env.NODE_ENV === "development")
+      if (Bun.env.RUNNING_ENV === "development")
         console.log("[RB-E] `/v2/post` accessed. Error message sent.");
 
       return message;
@@ -63,7 +63,7 @@ export class PostPasteRepository {
       paste,
     });
 
-    if (process.env.NODE_ENV === "development")
+    if (Bun.env.RUNNING_ENV === "development")
       console.log("[RB-E] `/v2/post` accessed. Paste sent.");
 
     return message;

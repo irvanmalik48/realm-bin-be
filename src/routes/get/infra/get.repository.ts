@@ -31,7 +31,7 @@ export class GetPasteRepository {
       description: "Yeah, use :id slug to get the paste by ID.",
     });
 
-    if (process.env.NODE_ENV === "development")
+    if (Bun.env.RUNNING_ENV === "development")
       console.log("[RB-E] `/v2/get` accessed. Onboarding message sent.");
 
     return message;
@@ -58,7 +58,7 @@ export class GetPasteRepository {
     const res = await valkey.get(id);
 
     if (!res) {
-      if (process.env.NODE_ENV === "development")
+      if (Bun.env.RUNNING_ENV === "development")
         console.log(`[RB-E] \`/v2/get/${id}\` accessed. Paste not found.`);
 
       return getErrorSchema<IGetError>({ error: "Paste not found." });
@@ -69,7 +69,7 @@ export class GetPasteRepository {
       paste: res,
     });
 
-    if (process.env.NODE_ENV === "development")
+    if (Bun.env.RUNNING_ENV === "development")
       console.log(`[RB-E] \`/v2/get/${id}\` accessed. Paste sent.`);
 
     return message;

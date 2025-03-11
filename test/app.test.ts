@@ -15,7 +15,7 @@ describe("RB-BE", () => {
         version: "1.0.0",
         apiPrefix: "v2",
         environment:
-          process.env.NODE_ENV === "production" ? "production" : "development",
+          Bun.env.RUNNING_ENV === "production" ? "production" : "development",
       })
     );
   });

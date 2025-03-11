@@ -39,10 +39,10 @@ export class RootRepository {
       version: "1.0.0",
       apiPrefix: "v2",
       environment:
-        process.env.NODE_ENV === "production" ? "production" : "development",
+        Bun.env.RUNNING_ENV === "production" ? "production" : "development",
     });
 
-    if (process.env.NODE_ENV === "development")
+    if (Bun.env.RUNNING_ENV === "development")
       console.log("[RB-E] `/v2` accessed. Welcome message sent.");
 
     return message;
@@ -97,7 +97,7 @@ export class RootRepository {
       ],
     });
 
-    if (process.env.NODE_ENV === "development")
+    if (Bun.env.RUNNING_ENV === "development")
       console.log("[RB-E] `/v2/endpoints` accessed. List of endpoints sent.");
 
     return message;
