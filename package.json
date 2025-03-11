@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun --watch src/app.ts",
     "build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/app.ts",
-    "start": "NODE_ENV=production bun dist/index.js",
+    "start": "NODE_ENV=production ./server",
     "test": "bun test"
   },
   "dependencies": {
