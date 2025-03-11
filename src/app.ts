@@ -6,7 +6,10 @@ import { AppRoutes } from "./app.routes";
 const app = new Elysia()
   .use(
     cors({
-      origin: /.*irvanma\.eu\.org$/, // Change this if you want to self host
+      origin:
+        (Bun.env.RUNNING_ENV as string) === "production"
+          ? /.*irvanma\.eu\.org$/
+          : "localhost",
     })
   )
   .use(AppRoutes)
