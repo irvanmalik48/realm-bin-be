@@ -6,7 +6,6 @@
       "dependencies": {
         "@elysiajs/cors": "^1.2.0",
         "@elysiajs/node": "^1.2.6",
-        "@paralleldrive/cuid2": "^2.2.2",
         "@types/bun": "^1.2.5",
         "elysia": "^1.2.22",
         "fast-json-stringify": "^6.0.1",
@@ -77,10 +76,6 @@
     "@fastify/merge-json-schemas": ["@fastify/merge-json-schemas@0.2.1", "", { "dependencies": { "dequal": "^2.0.3" } }, "sha512-OA3KGBCy6KtIvLf8DINC5880o5iBlDX4SxzLQS8HorJAbqluzLRn80UXU0bxZn7UOFhFgpRJDasfwn9nG4FG4A=="],
 
     "@iovalkey/commands": ["@iovalkey/commands@0.1.0", "", {}, "sha512-/B9W4qKSSITDii5nkBCHyPkIkAi+ealUtr1oqBJsLxjSRLka4pxun2VvMNSmcwgAMxgXtQfl0qRv7TE+udPJzg=="],
-
-    "@noble/hashes": ["@noble/hashes@1.7.1", "", {}, "sha512-B8XBPsn4vT/KJAGqDzbwztd+6Yte3P4V7iafm24bxgDe/mlRuK6xmWPuCNrKt2vDafZ8MfJLlchDG/vYafQEjQ=="],
-
-    "@paralleldrive/cuid2": ["@paralleldrive/cuid2@2.2.2", "", { "dependencies": { "@noble/hashes": "^1.1.5" } }, "sha512-ZOBkgDwEdoYVlSeRbYYXs0S9MejQofiVYoTbKzy/6GQa39/q5tQU2IX46+shYnUkpEl3wc+J6wRlar7r2EK2xA=="],
 
     "@sinclair/typebox": ["@sinclair/typebox@0.34.29", "", {}, "sha512-xTzI0LlHZ0eahKuN+2R+yJbEIUyV/ZSdtqvR3sHukgN56nvCW1tz+Yr6fQ6/7+WJ34AhaU9ZmYcHXv8xgj2Lvg=="],
 
