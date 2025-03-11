@@ -28,3 +28,5 @@ const app = new Elysia().use(AppRoutes).get("/", () => {
 app.listen(9944, () => {
   console.log(`[RB-E] Server is running on port 9944.`);
 });
+
+export { app };

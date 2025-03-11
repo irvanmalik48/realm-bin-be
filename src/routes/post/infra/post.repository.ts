@@ -1,6 +1,5 @@
 import fastJson from "fast-json-stringify";
 import { valkey } from "../../../shared/infrastructure/valkey";
-import { createId } from "@paralleldrive/cuid2";
 
 export interface IPostOnboarding {
   title: string;
@@ -44,7 +43,7 @@ export class PostPasteRepository {
       },
     });
 
-    const id = createId();
+    const id = Bun.randomUUIDv7();
     const res = await valkey.set(id, paste, "EX", 7 * 24 * 60 * 60);
 
     if (!res) {
