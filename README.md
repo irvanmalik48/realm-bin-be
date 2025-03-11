@@ -7,7 +7,7 @@ Backend for Realm Bin Pastebin Clone.
 1. Clone this repo:
 
 ```bash
-git clone https://github.com/irvanmalik48/arienne-elysia
+git clone https://github.com/irvanmalik48/realm-bin-be
 ```
 
 2. Install dependencies:
