@@ -1,17 +1,23 @@
 {
-  "name": "elysia",
-  "displayName": "Project Elysia",
+  "name": "rbbe",
+  "displayName": "Realm Bin BE",
   "version": "1.0.0",
   "license": "RCCL",
   "scripts": {
-    "dev": "tsx watch src/app.ts",
-    "build": "tsc src/app.ts --outDir dist",
-    "start": "NODE_ENV=production node dist/app.js"
+    "dev": "bun --watch src/app.ts",
+    "build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/app.ts",
+    "start": "NODE_ENV=production bun dist/index.js",
+    "test": "bun test"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.2.0",
     "@elysiajs/node": "^1.2.6",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "@types/bun": "^1.2.5",
+    "dotenv": "^16.4.7",
     "elysia": "^1.2.22",
-    "fast-json-stringify": "^6.0.1"
+    "fast-json-stringify": "^6.0.1",
+    "iovalkey": "^0.3.1"
   },
   "devDependencies": {
     "@types/node": "^22.13.5",
