@@ -14,17 +14,16 @@ git clone https://github.com/irvanmalik48/realm-bin-be
 
 You'll need to install `valkey` for the KV database. Do refer to their site on how to set it up.
 
-I use `pnpm` for package management and advise you to do so as well. But this advice is more of an
-optional errand rather than a mandatory one so use whatever package management you desire.
+This project uses `bun`. So please use `bun`.
 
 ```bash
-pnpm install
+bun install
 ```
 
 3. Running dev server:
 
 ```bash
-pnpm run dev
+bun run dev
 ```
 
 ## License
