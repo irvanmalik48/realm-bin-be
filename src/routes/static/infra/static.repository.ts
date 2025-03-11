@@ -34,16 +34,16 @@ export class RootRepository {
     });
 
     const message = welcomeSchema<IWelcomeMessage>({
-      title: "Arienne-Elysia",
-      description: "The backend for Project Arienne. Made in ElysiaJS.",
+      title: "Realm Bin BE",
+      description: "The backend for Realm Bin. Made in ElysiaJS.",
       version: "1.0.0",
-      apiPrefix: "v1",
+      apiPrefix: "v2",
       environment:
         process.env.NODE_ENV === "production" ? "production" : "development",
     });
 
     if (process.env.NODE_ENV === "development")
-      console.log("[A-E] `/v1` accessed. Welcome message sent.");
+      console.log("[RB-E] `/v2` accessed. Welcome message sent.");
 
     return message;
   }
@@ -83,23 +83,22 @@ export class RootRepository {
           description: "List all the endpoints of the API.",
         },
         {
-          title: "Classify Image",
-          route: "/classify",
-          method: "POST",
-          description: "Classify a fruit or vegetable image using the model.",
+          title: "Get Paste by ID",
+          route: "/get/:id",
+          method: "GET",
+          description: "Get paste by ID.",
         },
         {
-          title: "Classify (WebSocket)",
-          route: "/classify-ws",
-          method: "WebSocket",
-          description:
-            "Classify a fruit or vegetable image using the model through WebSocket.",
+          title: "Add Paste",
+          route: "/post",
+          method: "POST",
+          description: "Add new paste. Use JSON body.",
         },
       ],
     });
 
     if (process.env.NODE_ENV === "development")
-      console.log("[A-E] `/v1/endpoints` accessed. List of endpoints sent.");
+      console.log("[RB-E] `/v2/endpoints` accessed. List of endpoints sent.");
 
     return message;
   }
