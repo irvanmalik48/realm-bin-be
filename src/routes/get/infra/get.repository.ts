@@ -1,5 +1,8 @@
 import fastJson from "fast-json-stringify";
 import { valkey } from "../../../shared/infrastructure/valkey";
+import { config } from "../../../../config";
+import destr from "destr";
+import type { IPostPaste } from "../../post/infra/post.repository";
 
 export interface IGetOnboarding {
   title: string;
@@ -12,7 +15,8 @@ export interface IGetPaste {
 }
 
 export interface IGetError {
-  error: string;
+  err: string;
+  message: string;
 }
 
 export class GetPasteRepository {
@@ -31,13 +35,13 @@ export class GetPasteRepository {
       description: "Yeah, use :id slug to get the paste by ID.",
     });
 
-    if (Bun.env.RUNNING_ENV === "development")
+    if (config.environment === "development")
       console.log("[RB-E] `/v2/get` accessed. Onboarding message sent.");
 
     return message;
   }
 
-  static async get(id: string): Promise<string> {
+  static async get(id: string, password: string | undefined): Promise<string> {
     const getPasteSchema = fastJson({
       title: "Get Paste Schema",
       type: "object",
@@ -51,25 +55,67 @@ export class GetPasteRepository {
       title: "Get Error Schema",
       type: "object",
       properties: {
-        error: { type: "string" },
+        err: { type: "string" },
+        message: { type: "string" },
       },
     });
 
     const res = await valkey.get(id);
 
     if (!res) {
-      if (Bun.env.RUNNING_ENV === "development")
+      if (config.environment === "development")
         console.log(`[RB-E] \`/v2/get/${id}\` accessed. Paste not found.`);
 
-      return getErrorSchema<IGetError>({ error: "Paste not found." });
+      return getErrorSchema<IGetError>({
+        err: "Paste not found",
+        message: "The paste you are looking for is not found.",
+      });
+    }
+
+    const content = destr<Omit<IPostPaste, "id">>(res);
+
+    if (content.isLocked === "true") {
+      if (config.environment === "development")
+        console.log(
+          `[RB-E] \`/v2/get/${id}\` accessed. Paste is locked. Commencing password check.`
+        );
+
+      if (!password) {
+        if (config.environment === "development")
+          console.log(
+            `[RB-E] \`/v2/get/${id}\` accessed. Paste is locked. Password not provided.`
+          );
+
+        return getErrorSchema<IGetError>({
+          err: "Paste is locked",
+          message: "The paste you are looking for is locked.",
+        });
+      }
+
+      const compare = await Bun.password.verify(
+        password,
+        content.password as string
+      );
+
+      if (!compare) {
+        if (config.environment === "development")
+          console.log(
+            `[RB-E] \`/v2/get/${id}\` accessed. Paste is locked. Password incorrect.`
+          );
+
+        return getErrorSchema<IGetError>({
+          err: "Password incorrect",
+          message: "The password you provided is incorrect.",
+        });
+      }
     }
 
     const message = getPasteSchema<IGetPaste>({
       id,
-      paste: res,
+      paste: content.paste,
     });
 
-    if (Bun.env.RUNNING_ENV === "development")
+    if (config.environment === "development")
       console.log(`[RB-E] \`/v2/get/${id}\` accessed. Paste sent.`);
 
     return message;

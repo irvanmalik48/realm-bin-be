@@ -1,4 +1,5 @@
 import fastJson from "fast-json-stringify";
+import { config } from "../../../../config";
 
 export interface IWelcomeMessage {
   title: string;
@@ -36,13 +37,13 @@ export class RootRepository {
     const message = welcomeSchema<IWelcomeMessage>({
       title: "Realm Bin BE",
       description: "The backend for Realm Bin. Made in ElysiaJS.",
-      version: "1.0.0",
+      version: "1.0.1",
       apiPrefix: "v2",
       environment:
-        Bun.env.RUNNING_ENV === "production" ? "production" : "development",
+        config.environment === "production" ? "production" : "development",
     });
 
-    if (Bun.env.RUNNING_ENV === "development")
+    if (config.environment === "development")
       console.log("[RB-E] `/v2` accessed. Welcome message sent.");
 
     return message;
@@ -97,7 +98,7 @@ export class RootRepository {
       ],
     });
 
-    if (Bun.env.RUNNING_ENV === "development")
+    if (config.environment === "development")
       console.log("[RB-E] `/v2/endpoints` accessed. List of endpoints sent.");
 
     return message;

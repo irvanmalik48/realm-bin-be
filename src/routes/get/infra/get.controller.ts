@@ -5,4 +5,4 @@ import { getById } from "../app/get-by-id.usecase";
 
 export const GetController = new Elysia()
   .get("/get", () => getOnboarding())
-  .get("/get/:id", (req) => getById(req.params.id));
+  .get("/get/:id", (req) => getById(req.params.id, req.query.password));
