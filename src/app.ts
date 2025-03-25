@@ -2,12 +2,13 @@ import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import fastJson from "fast-json-stringify";
 import { AppRoutes } from "./app.routes";
+import { config } from "../config";
 
 const app = new Elysia()
   .use(
     cors({
       origin:
-        (Bun.env.RUNNING_ENV as string) === "production"
+        (config.environment as string) === "production"
           ? /.*irvanma\.eu\.org$/
           : "localhost",
     })
@@ -30,13 +31,13 @@ const app = new Elysia()
       visit: "/v2",
     });
 
-    if (Bun.env.RUNNING_ENV === "development")
+    if (config.environment === "development")
       console.log("[RB-E] `/` accessed. You shouldn't be here.");
 
     return message;
   });
 
-app.listen(9944, () => {
+app.listen(config.port, () => {
   console.log(`[RB-E] Server is running on port 9944.`);
 });
 
