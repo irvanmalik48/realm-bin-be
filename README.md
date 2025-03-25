@@ -40,7 +40,7 @@ Deploying this is pretty easy. Yeah, that's it, what are you expecting me to say
 
 2. Copy paste the `.env.example` file and rename it to `.env`. Fill the necessary field as per the example. You can also consult the `valkey` docs if you want to. Not that I care, to be honest.
 
-3. In `config.ts` file, change the environment and port where you wanna run it from. Using "production" for the environment is recommended if you want to have cleaner logs (it logs absolutely nothing doing so).
+3. In `config.ts` file, change the environment, domain (needed for CORS on prod), and port where you wanna run it from. Using "production" for the environment is recommended if you want to have cleaner logs (it logs absolutely nothing doing so).
 
 4. Run the build command:
 
