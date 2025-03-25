@@ -9,7 +9,7 @@ const app = new Elysia()
     cors({
       origin:
         (config.environment as string) === "production"
-          ? /.*irvanma\.eu\.org$/
+          ? config.corsDomainRegex
           : "localhost",
     })
   )
