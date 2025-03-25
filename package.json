@@ -1,7 +1,7 @@
 {
   "name": "rbbe",
   "displayName": "Realm Bin BE",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "RCCL",
   "scripts": {
     "dev": "bun --watch src/app.ts",
@@ -12,7 +12,9 @@
   "dependencies": {
     "@elysiajs/cors": "^1.2.0",
     "@elysiajs/node": "^1.2.6",
+    "@paralleldrive/cuid2": "^2.2.2",
     "@types/bun": "^1.2.5",
+    "destr": "^2.0.3",
     "elysia": "^1.2.22",
     "fast-json-stringify": "^6.0.1",
     "iovalkey": "^0.3.1"
