@@ -80,7 +80,7 @@ WantedBy=multi-user.target
 
 ## TODO
 
-- [ ] Proper documentation.
+- [x] ~Proper documentation~ We got Swagger now.
 - [x] Text-based paste.
 - [x] File-based paste.
 - [x] Passworded paste for both types of paste.
