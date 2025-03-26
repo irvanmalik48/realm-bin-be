@@ -9,6 +9,8 @@ Backend for Realm Bin Pastebin Clone.
 - Configurable paste id length and other variables.
 - Store file (default max size is 1MB).
 - Automatic cleanups for expired file-based paste keys.
+- Swagger API docs in development environment.
+- Graceful server plugin added.
 
 ## Running on local
 
