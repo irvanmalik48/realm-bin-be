@@ -9,6 +9,8 @@ jobs:
       image: valkey/valkey
       ports:
         - 6379:6379
+      env:
+        PATH: /valkey/bin:$PATH
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
