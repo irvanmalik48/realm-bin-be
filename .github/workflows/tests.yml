@@ -10,7 +10,7 @@ jobs:
       - uses: shogo82148/actions-setup-redis@v1
         with:
           distribution: "valkey"
-          version: "8.0.2"
+          redis-version: "8.0.2"
       - uses: oven-sh/setup-bun@v2
       - run: bun install
       - run: bun test
