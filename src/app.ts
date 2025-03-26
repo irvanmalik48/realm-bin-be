@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { AppRoutes } from "./app.routes";
 import { config } from "../config";
+import { welcomePage } from "./routes/static/app/welcome.usecase";
 
 const app = new Elysia()
   .use(
@@ -14,7 +15,11 @@ const app = new Elysia()
   )
   .use(AppRoutes)
   .get("/", ({ redirect }) => {
-    return redirect("/v2", 308);
+    if (config.prefix) {
+      return redirect(`/${config.prefix}`, 308);
+    } else {
+      return welcomePage();
+    }
   });
 
 app.listen(config.port, () => {
