@@ -85,7 +85,7 @@ describe("RB-BE", () => {
     expect(res.password).toEqual(expect.any(String));
 
     describe("RB-BE (Inheriting)", () => {
-      it("[GET /v2/get/:id] Get a paste", async () => {
+      it("[GET /v2/get/:id] Get a passworded paste", async () => {
         const response = await app
           .handle(
             new Request(
