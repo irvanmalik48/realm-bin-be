@@ -5,14 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VALKEY_URL: redis://localhost:6379/0
-    container:
-      image: valkey/valkey
-      ports:
-        - 6379:6379
-      env:
-        PATH: /valkey/bin:$PATH
     steps:
       - uses: actions/checkout@v4
+      - uses: shogo82148/actions-setup-redis@v1
+        with:
+          distribution: "valkey"
+          version: "8.0.2"
       - uses: oven-sh/setup-bun@v2
       - run: bun install
       - run: bun test
