@@ -6,7 +6,9 @@ Backend for Realm Bin Pastebin Clone.
 
 - It's fast (yeah, no sh\*t sherlock).
 - Pastes can be locked behind password.
-- Configurable paste id length.
+- Configurable paste id length and other variables.
+- Store file (default max size is 1MB).
+- Automatic cleanups for expired file-based paste keys.
 
 ## Running on local
 
@@ -34,21 +36,27 @@ bun run dev
 
 ## Deploying
 
-Deploying this is pretty easy. Yeah, that's it, what are you expecting me to say after?
+1. Go clone the repo and install the dependencies like how you should when you want to run it in local.
 
-1. Clone thi- why do I even rewrite this in the first place. Go clone the repo and install the dependencies like how you should when you want to run it in local.
+2. Copy paste the `.env.example` file and rename it to `.env`. Fill the necessary field as per the example. You can also consult the `valkey` docs for some more options on how to structure the link to it.
 
-2. Copy paste the `.env.example` file and rename it to `.env`. Fill the necessary field as per the example. You can also consult the `valkey` docs if you want to. Not that I care, to be honest.
+3. In `config.ts` file, change the environment, domain (needed for CORS on prod), port where you wanna run it from, there's also other variables you can modify in general but keep notes on those 3 and probably also the folder path in that config. Using "production" for the environment is recommended if you want to have cleaner logs (it logs absolutely nothing doing so except for some essential stuffs).
 
-3. In `config.ts` file, change the environment, domain (needed for CORS on prod), and port where you wanna run it from. Using "production" for the environment is recommended if you want to have cleaner logs (it logs absolutely nothing doing so).
+4. Since it uses `/opt/pastes` by default for file-based pastes, do create the folder and give proper permissions:
 
-4. Run the build command:
+```bash
+sudo mkdir /opt/pastes
+sudo chown your-user:your-user /opt/pastes
+sudo chmod 700 /opt/pastes
+```
+
+5. Run the build command:
 
 ```bash
 bun run build
 ```
 
-5. Voila! You have the `server` executable now. Do whatever you want with it, I don't care. But I recommend you to set up a systemd service (or any kind of init service manager you have currently) and host it natively. Here's an example for systemd service:
+6. Voila! You have the `server` executable now. I recommend you to set up a systemd service (or any kind of init service manager you have currently) and host it natively. Here's an example for systemd service:
 
 ```ini
 [Unit]
@@ -64,10 +72,21 @@ Restart=on-failure
 RestartSec=5
 StandardOutput=journal
 StandardError=journal
+TimeoutStopSec=2
 
 [Install]
 WantedBy=multi-user.target
 ```
+
+## TODO
+
+- [ ] Proper documentation.
+- [x] Text-based paste.
+- [x] File-based paste.
+- [x] Passworded paste for both types of paste.
+- [x] Size and length constraint for pastes.
+- [ ] Encrypt paste if a password is set.
+- [ ] More customization options.
 
 ## License
 

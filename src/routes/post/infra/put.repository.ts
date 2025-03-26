@@ -3,21 +3,38 @@ import { valkey } from "../../../shared/infrastructure/valkey";
 import { createId } from "../../../shared/infrastructure/cuid2";
 import { config } from "../../../../config";
 
-export interface IPostPaste {
+export interface IPutPaste {
   id: string;
   isLocked: "true" | "false";
   password?: string;
-  paste: string;
+  paste: File;
 }
 
-export class PostPasteRepository {
-  static async post(
-    paste: string,
+export class PutPasteRepository {
+  static async handleFile(id: string, paste: File) {
+    const file = new Blob([paste], { type: paste.type });
+    const extension = paste.name.split(".")[paste.name.split(".").length - 1];
+    const filePath = `${config.defaultPasteFolder}/${id}.${extension}`;
+    const saving = await Bun.write(filePath, file, {
+      createPath: false,
+    }).catch((err) => {
+      console.error(err);
+      return -1;
+    });
+
+    return {
+      path: filePath,
+      status: saving,
+    };
+  }
+
+  static async put(
+    paste: File,
     isLocked: "true" | "false",
     password: string | undefined
   ): Promise<string> {
-    const postPasteSchema = fastJson({
-      title: "Post Paste Schema",
+    const putPasteSchema = fastJson({
+      title: "Put Paste Schema",
       type: "object",
       properties: {
         id: { type: "string" },
@@ -29,8 +46,8 @@ export class PostPasteRepository {
 
     let bcryptHash: string | undefined;
 
-    const postErrorSchema = fastJson({
-      title: "Post Error Schema",
+    const putErrorSchema = fastJson({
+      title: "Put Error Schema",
       type: "object",
       properties: {
         err: { type: "string" },
@@ -48,11 +65,12 @@ export class PostPasteRepository {
       },
     });
 
-    if (paste.includes("is-file-paste:::", 0)) {
-      const message = postErrorSchema({
-        err: "Invalid Paste",
-        message:
-          "Paste cannot contain 'is-file-paste:::' as it's a reserved string keyword. You're trying to break the system, cuh?",
+    if (paste.size > config.maxFileSize) {
+      const message = putErrorSchema({
+        err: "File too large",
+        message: `File size must be at most ${
+          config.maxFileSize / 1024 / 1024
+        } MB.`,
       });
 
       if (config.environment === "development")
@@ -62,7 +80,7 @@ export class PostPasteRepository {
     }
 
     if (isLocked === "true" && !password) {
-      const message = postErrorSchema({
+      const message = putErrorSchema({
         err: "Password is required",
         message: "Password is required if isLocked is true.",
       });
@@ -74,7 +92,7 @@ export class PostPasteRepository {
     }
 
     if (isLocked === "false" && password) {
-      const message = postErrorSchema({
+      const message = putErrorSchema({
         err: "Password is not required",
         message: "If you want to lock the paste, set isLocked to true.",
       });
@@ -87,7 +105,7 @@ export class PostPasteRepository {
 
     if (isLocked === "true" && password) {
       if (password.length < 8) {
-        const message = postErrorSchema({
+        const message = putErrorSchema({
           err: "Password is too short",
           message: "Password must be at least 8 characters.",
         });
@@ -104,10 +122,14 @@ export class PostPasteRepository {
       });
     }
 
-    if (paste.length > config.maxPasteLength) {
-      const message = postErrorSchema({
-        err: "Paste is too long",
-        message: `Paste must be at most ${config.maxPasteLength} characters.`,
+    const id = createId();
+
+    const handleFile = await this.handleFile(id, paste);
+
+    if (handleFile.status === -1) {
+      const message = putErrorSchema({
+        err: "Internal Server Error",
+        message: "Failed to save file. Please try again later.",
       });
 
       if (config.environment === "development")
@@ -117,16 +139,16 @@ export class PostPasteRepository {
     }
 
     const pasteToDB = pasteToDBSchema({
-      paste,
+      paste: `is-file-paste:::${handleFile.path}`,
       isLocked,
       password: bcryptHash || "",
     });
 
-    const id = createId();
-    const res = await valkey.set(id, pasteToDB, "EX", 7 * 24 * 60 * 60);
+    const res = await valkey.set(id, pasteToDB);
+    await valkey.set(`${id}-shadow`, "", "EX", 7 * 24 * 60 * 60);
 
     if (!res) {
-      const message = postErrorSchema({
+      const message = putErrorSchema({
         err: "Internal Server Error",
         message: "Failed to save paste to database.",
       });
@@ -137,9 +159,9 @@ export class PostPasteRepository {
       return message;
     }
 
-    const message = postPasteSchema({
-      id,
-      paste,
+    const message = putPasteSchema({
+      id: id,
+      paste: `is-file-paste:::${handleFile.path}`,
       isLocked,
       password: bcryptHash || "",
     });

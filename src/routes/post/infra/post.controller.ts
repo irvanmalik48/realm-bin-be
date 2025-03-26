@@ -1,20 +1,19 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 
-import { postOnboarding } from "../app/onboarding.usecase";
 import { postPaste } from "../app/post-paste.usecase";
 
-export interface IPostRequestBody {
-  content: string;
-  isLocked: "true" | "false";
-  password?: string;
-}
-
-export const PostController = new Elysia()
-  .post("/post", (req) =>
-    postPaste(
-      (req.body as IPostRequestBody).content,
-      (req.body as IPostRequestBody).isLocked,
-      (req.body as IPostRequestBody).password
-    )
-  )
-  .get("/post", () => postOnboarding());
+export const PostController = new Elysia({
+  name: "Post POST Controller",
+}).post(
+  "/post",
+  ({ body }) =>
+    postPaste(body.content, body.isLocked ?? "false", body.password),
+  {
+    body: t.Object({
+      content: t.String(),
+      isLocked: t.Optional(t.Union([t.Literal("true"), t.Literal("false")])),
+      password: t.Optional(t.String()),
+    }),
+    parse: "json",
+  }
+);

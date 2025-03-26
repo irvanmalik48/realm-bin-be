@@ -37,7 +37,7 @@ export class RootRepository {
     const message = welcomeSchema<IWelcomeMessage>({
       title: "Realm Bin BE",
       description: "The backend for Realm Bin. Made in ElysiaJS.",
-      version: "1.0.1",
+      version: "1.0.2",
       apiPrefix: "v2",
       environment:
         config.environment === "production" ? "production" : "development",
@@ -90,10 +90,18 @@ export class RootRepository {
           description: "Get paste by ID.",
         },
         {
-          title: "Add Paste",
+          title: "Add Paste (Text)",
           route: "/post",
           method: "POST",
-          description: "Add new paste. Use JSON body.",
+          description:
+            "Add new text-based paste. Use multipart/form-data body.",
+        },
+        {
+          title: "Add Paste (File)",
+          route: "/post",
+          method: "PUT",
+          description:
+            "Add new file-based paste. Use multipart/form-data body.",
         },
       ],
     });

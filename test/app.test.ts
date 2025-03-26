@@ -13,18 +13,24 @@ describe("RB-BE", () => {
       JSON.stringify({
         title: "Realm Bin BE",
         description: "The backend for Realm Bin. Made in ElysiaJS.",
-        version: "1.0.1",
+        version: "1.0.2",
         apiPrefix: "v2",
         environment: config.environment,
       })
     );
   });
-  it("[POST /v2/post] Send a paste", async () => {
+
+  it("[POST /v2/post] Send a paste (text)", async () => {
+    const form = new FormData();
+
+    form.append("content", "Hello, World!");
+    form.append("isLocked", "false");
+
     const response = await app
       .handle(
         new Request("http://localhost:9944/v2/post", {
           method: "POST",
-          body: JSON.stringify({ content: "Hello, World!", isLocked: "false" }),
+          body: JSON.stringify(Object.fromEntries(form)),
           headers: {
             "Content-Type": "application/json",
           },
@@ -39,10 +45,10 @@ describe("RB-BE", () => {
     expect(res.isLocked).toEqual("false");
 
     describe("RB-BE (Inheriting)", () => {
-      it("[GET /v2/get/:id] Get a paste", async () => {
+      it("[GET /v2/get/:id] Get a paste (text)", async () => {
         const response = await app
           .handle(
-            new Request(`http://localhost:9944/v2/get/${res.id}`, {
+            new Request(`http://localhost:9944/v2/get/${res.id}?type=text`, {
               method: "GET",
             })
           )
@@ -60,7 +66,8 @@ describe("RB-BE", () => {
       });
     });
   });
-  it("[POST /v2/post] Send a passworded paste", async () => {
+
+  it("[POST /v2/post] Send a passworded paste (text)", async () => {
     const response = await app
       .handle(
         new Request("http://localhost:9944/v2/post", {
@@ -85,11 +92,11 @@ describe("RB-BE", () => {
     expect(res.password).toEqual(expect.any(String));
 
     describe("RB-BE (Inheriting)", () => {
-      it("[GET /v2/get/:id] Get a passworded paste", async () => {
+      it("[GET /v2/get/:id] Get a passworded paste (text)", async () => {
         const response = await app
           .handle(
             new Request(
-              `http://localhost:9944/v2/get/${res.id}?password=password`,
+              `http://localhost:9944/v2/get/${res.id}?type=text&password=password`,
               {
                 method: "GET",
               }
@@ -98,7 +105,7 @@ describe("RB-BE", () => {
           .then((data) => data.text());
 
         // cleanup
-        valkey.del(res.id);
+        await valkey.del(res.id);
 
         expect(response).toBe(
           JSON.stringify({

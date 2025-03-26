@@ -1,5 +1,5 @@
-import { PostPasteRepository } from "../infra/post.repository";
+import { PostOnboardingRepository } from "../infra/onboarding.repository";
 
 export const postOnboarding = (): string => {
-  return PostPasteRepository.onboarding();
+  return PostOnboardingRepository.onboarding();
 };

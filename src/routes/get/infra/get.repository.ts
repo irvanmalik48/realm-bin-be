@@ -3,6 +3,7 @@ import { valkey } from "../../../shared/infrastructure/valkey";
 import { config } from "../../../../config";
 import destr from "destr";
 import type { IPostPaste } from "../../post/infra/post.repository";
+import { ElysiaFile, file } from "elysia";
 
 export interface IGetOnboarding {
   title: string;
@@ -41,7 +42,11 @@ export class GetPasteRepository {
     return message;
   }
 
-  static async get(id: string, password: string | undefined): Promise<string> {
+  static async get(
+    id: string,
+    type: "text" | "file" | undefined,
+    password: string | undefined
+  ): Promise<string | ElysiaFile> {
     const getPasteSchema = fastJson({
       title: "Get Paste Schema",
       type: "object",
@@ -117,6 +122,26 @@ export class GetPasteRepository {
 
     if (config.environment === "development")
       console.log(`[RB-E] \`/v2/get/${id}\` accessed. Paste sent.`);
+
+    if (type === "file") {
+      const path = content.paste.split(":::")[1];
+      const res = file(path);
+
+      if (!file) {
+        if (config.environment === "development")
+          console.log(
+            `[RB-E] \`/v2/get/${id}\` accessed. Paste is file-based. File not found.`
+          );
+
+        return getErrorSchema<IGetError>({
+          err: "File not found",
+          message:
+            "The file you are looking for is not found, but the paste is available somehow (weird).",
+        });
+      }
+
+      return res;
+    }
 
     return message;
   }
