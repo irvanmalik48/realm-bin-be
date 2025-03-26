@@ -12,6 +12,7 @@
   "dependencies": {
     "@elysiajs/cors": "^1.2.0",
     "@elysiajs/node": "^1.2.6",
+    "@elysiajs/swagger": "^1.2.2",
     "@paralleldrive/cuid2": "^2.2.2",
     "@types/bun": "^1.2.5",
     "destr": "^2.0.3",
