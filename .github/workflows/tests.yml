@@ -1,8 +1,14 @@
-on: [push]
+on: [push, pull_request]
 name: run-tests
 jobs:
   runtest:
     runs-on: ubuntu-latest
+    env:
+      VALKEY_URL: redis://localhost:6379/0
+    container:
+      image: valkey/valkey
+      ports:
+        - 6379:6379
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
