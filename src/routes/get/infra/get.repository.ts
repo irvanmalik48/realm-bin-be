@@ -8,6 +8,12 @@ import { ElysiaFile, file } from "elysia";
 export interface IGetOnboarding {
   title: string;
   description: string;
+  queries: {
+    "?type": string;
+    "?t": string;
+    "?password": string;
+    "?p": string;
+  };
 }
 
 export interface IGetPaste {
@@ -28,12 +34,27 @@ export class GetPasteRepository {
       properties: {
         title: { type: "string" },
         description: { type: "string" },
+        queries: {
+          type: "object",
+          properties: {
+            "?type": { type: "string" },
+            "?t": { type: "string" },
+            "?password": { type: "string" },
+            "?p": { type: "string" },
+          },
+        },
       },
     });
 
     const message = onboardingSchema<IGetOnboarding>({
       title: "Get Paste Endpoint",
       description: "Yeah, use :id slug to get the paste by ID.",
+      queries: {
+        "?type": "Can be 'text' or 'file'. Default is 'text'.",
+        "?t": "Alias for '?type'. Choose one.",
+        "?password": "Password for the paste if it's locked. Optional.",
+        "?p": "Alias for '?password'. Choose one.",
+      },
     });
 
     if (config.environment === "development")
