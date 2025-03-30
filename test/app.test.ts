@@ -13,7 +13,7 @@ describe("RB-BE", () => {
       JSON.stringify({
         title: "Realm Bin BE",
         description: "The backend for Realm Bin. Made in ElysiaJS.",
-        version: "2.0.2",
+        version: "2.0.3",
         apiPrefix: "v2",
         environment: config.environment,
       })
