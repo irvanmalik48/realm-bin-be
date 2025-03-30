@@ -44,6 +44,57 @@ export class PostOnboardingRepository {
       properties: {
         title: { type: "string" },
         description: { type: "string" },
+        rules: {
+          type: "object",
+          properties: {
+            post: {
+              type: "object",
+              properties: {
+                method: { type: "string" },
+                accepts: { type: "array", items: { type: "string" } },
+                isLocked: {
+                  type: "object",
+                  properties: {
+                    optional: { type: "boolean" },
+                    type: { type: "string" },
+                    password: {
+                      type: "object",
+                      properties: {
+                        required: { type: "boolean" },
+                        min: { type: "number" },
+                      },
+                    },
+                    description: { type: "string" },
+                  },
+                },
+                description: { type: "string" },
+              },
+            },
+            put: {
+              type: "object",
+              properties: {
+                method: { type: "string" },
+                accepts: { type: "array", items: { type: "string" } },
+                isLocked: {
+                  type: "object",
+                  properties: {
+                    optional: { type: "boolean" },
+                    type: { type: "string" },
+                    password: {
+                      type: "object",
+                      properties: {
+                        required: { type: "boolean" },
+                        min: { type: "number" },
+                      },
+                    },
+                    description: { type: "string" },
+                  },
+                },
+                description: { type: "string" },
+              },
+            },
+          },
+        },
       },
     });
 
