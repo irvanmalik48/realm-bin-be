@@ -42,7 +42,7 @@ export class RootRepository {
     const message = welcomeSchema<IWelcomeMessage>({
       title: "Realm Bin BE",
       description: "The backend for Realm Bin. Made in ElysiaJS.",
-      version: "2.0.0",
+      version: "2.0.2",
       apiPrefix: "v2",
       environment:
         config.environment === "production" ? "production" : "development",
