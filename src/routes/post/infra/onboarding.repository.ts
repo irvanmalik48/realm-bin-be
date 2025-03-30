@@ -7,6 +7,7 @@ export interface IPostOnboarding {
   rules: {
     post: {
       method: string;
+      accepts: string[];
       isLocked: {
         optional: boolean;
         type: string;
@@ -20,6 +21,7 @@ export interface IPostOnboarding {
     };
     put: {
       method: string;
+      accepts: string[];
       isLocked: {
         optional: boolean;
         type: string;
@@ -52,6 +54,11 @@ export class PostOnboardingRepository {
       rules: {
         post: {
           method: "POST",
+          accepts: [
+            "application/json",
+            "application/x-www-form-urlencoded",
+            "multipart/form-data",
+          ],
           isLocked: {
             optional: true,
             type: "string",
@@ -66,6 +73,7 @@ export class PostOnboardingRepository {
         },
         put: {
           method: "PUT",
+          accepts: ["multipart/form-data"],
           isLocked: {
             optional: true,
             type: "string",

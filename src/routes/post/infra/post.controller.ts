@@ -14,6 +14,5 @@ export const PostController = new Elysia({
       isLocked: t.Optional(t.Union([t.Literal("true"), t.Literal("false")])),
       password: t.Optional(t.String()),
     }),
-    parse: "json",
   }
 );
