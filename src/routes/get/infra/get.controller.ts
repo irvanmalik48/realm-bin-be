@@ -7,10 +7,9 @@ export const GetController = new Elysia({
   name: "Get Controller",
 })
   .get("/get", () => getOnboarding())
-  .get("/get/:id", (req) =>
-    getById(
-      req.params.id,
-      req.query.type as "text" | "file" | undefined,
-      req.query.password
-    )
-  );
+  .get("/get/:id", ({ query, params }) => {
+    const type = query.type ?? query.t ?? undefined;
+    const password = query.password ?? query.p ?? undefined;
+
+    return getById(params.id, type as "text" | "file" | undefined, password);
+  });
