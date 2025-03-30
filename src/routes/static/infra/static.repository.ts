@@ -14,6 +14,11 @@ export interface IEndpoint {
   route: string;
   method: string;
   description: string;
+  queries?: IQuery[];
+}
+
+export interface IQuery {
+  [key: string]: string | undefined;
 }
 
 export interface IListEndpoints {
@@ -86,6 +91,19 @@ export class RootRepository {
         {
           title: "Get Paste by ID",
           route: "/get/:id",
+          queries: [
+            {
+              key: "type",
+              alias: "t",
+              description:
+                "Type of paste. Can be 'text' or 'file'. Default is 'text'.",
+            },
+            {
+              key: "password",
+              alias: "p",
+              description: "Password for the paste if it's locked. Optional.",
+            },
+          ],
           method: "GET",
           description: "Get paste by ID.",
         },
@@ -93,8 +111,7 @@ export class RootRepository {
           title: "Add Paste (Text)",
           route: "/post",
           method: "POST",
-          description:
-            "Add new text-based paste. Use multipart/form-data body.",
+          description: "Add new text-based paste. Accepts JSON and FormData.",
         },
         {
           title: "Add Paste (File)",
